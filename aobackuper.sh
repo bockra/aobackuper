@@ -1,5 +1,5 @@
 #!/bin/bash
-
+#just to check git string
 dir="/tmp/arch/"
 name=`date +%d-%m-%y`.tar.gz
 
