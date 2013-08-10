@@ -34,7 +34,27 @@ function message()
 whiptail  --msgbox "$1" 8 60 --title "$progname"
 }
 
-add_arch 
-yesno
+function add_cron
+{
+cron=$(whiptail --title "$progname" --radiolist "Choose how often you want to make backups\ninstaller will create sym link in /etc/cron.*\n\n select item with SPACE key" 15 45 3 \
+"daily" ""  on \
+"weekly" "123123" off \
+"monthly" "" off \
+3>&1 1>&2 2>&3)
 
+exitstatus=$?
+if [ $exitstatus = 0 ]; then
+	ln -s `pwd`/files/$script /etc/cron.$cron/$script
+else
+    message "You can manually add $script to cron later"
+fi
+
+
+}
+
+
+
+#add_arch 
+#yesno
+add_cron
 
