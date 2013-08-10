@@ -1,12 +1,14 @@
 #!/bin/bash
 
+source ./files/aoback.cfg
+
 function add_arch()
 {
 archive=$(whiptail --inputbox "Enter path to file/folder you want to backup \nLater you can edit archive.lst file line-by-line \nfor your backup list\nex. /home/user/folder or /var/log/main.log" 10 60 --title "$progname" 3>&1 1>&2 2>&3)
  
 exitstatus=$?
 if [ $exitstatus = 0 ] && [ ! -z "$archive" ]; then
-    echo $archive >> ./files/archive.lst
+    echo $archive >> ./files/$lst
 else
     message "You have to enter at least one file or dir to backup"
     add_arch
@@ -31,8 +33,6 @@ function message()
 {
 whiptail  --msgbox "$1" 8 60 --title "$progname"
 }
-
-progname="Aobackup"
 
 add_arch 
 yesno
