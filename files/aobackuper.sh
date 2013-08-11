@@ -11,18 +11,6 @@ source ./aoback.cfg
 #lst (def archive.lst) - list of dirs and files to backup
 #dir (def $HOME) - dir to store backups
 #name (def `date +%d-%m-%y`-aob.tar.gz) - archive filename (ex 08-08-13-aob.tar.gz)
-#
-
-function getlist()
-{
-for i in `uniq $lst`
-do
-	list=$list" "$i
-done;
-echo $list
-}
-
-echo $list
 
 case "$1" in
         -a) 
@@ -42,7 +30,15 @@ case "$1" in
 esac
 
 
-list=$(getlist)
+
+for i in `uniq $lst`
+do
+if [ -e "$i" ]; then
+	list=$list" "$i
+else
+	echo "$i is not exists"
+fi
+done;
 echo $list
 
 tar -pzcvf $dir/$name $list
