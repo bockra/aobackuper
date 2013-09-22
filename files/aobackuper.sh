@@ -20,8 +20,7 @@ case "$1" in
 			#variable from variable :)
 			echo "Adding item ${!i} to backup list $lst"
 			echo "${!i}" >> ./$lst
-			done
-			
+			done	
 			exit 0	
 		fi
 	        ;;
@@ -32,13 +31,15 @@ esac
 
 
 for i in `uniq $lst`
-do
-if [ -e "$i" ]; then
-	list=$list" "$i
-else
-	echo "$i is not exists"
-fi
-done;
+	do
+	if [ -e "$i" ]; then
+		list=$list" "$i
+	else
+		echo "$i is not exists"
+	fi
+	done;
+
+$list=$list" "$lst
 echo $list
 
 tar -pzcvf $dir/$name $list
