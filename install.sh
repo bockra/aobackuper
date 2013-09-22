@@ -1,6 +1,26 @@
 #!/bin/bash
+####################################
+###     part of Aobackuper       ###
+###      for details goto        ###
+### github.com/bockro/aobackuper ###
+####################################
+###     bockra         2013      ###
+####################################
 
 source ./files/aoback.cfg
+
+function install()
+{
+whiptail --title "$progname" --yesno "Program will be installed in $inst_fldr dir\n If you want to use curent folder `pwd` for $progname select NO" 10 60
+exitstatus=$?
+if [ $exitstatus = 0 ]; then
+	mkdir -p $inst_fldr
+	cp -r ./files/* $inst_fldr
+else
+    echo "Install in curent dir"
+    $inst_fldr=`pwd`
+fi
+}
 
 function add_arch()
 {
@@ -8,7 +28,7 @@ archive=$(whiptail --inputbox "Enter path to file/folder you want to backup \nLa
  
 exitstatus=$?
 if [ $exitstatus = 0 ] && [ ! -z "$archive" ] && [ -e "$archive" ]; then
-    echo $archive >> ./files/$lst
+    echo $archive >> $inst_fldr/$lst
 else
     message "You have to enter at least one existing file or dir to backup"
     add_arch
@@ -42,13 +62,14 @@ cron=$(whiptail --title "$progname" --radiolist "Choose how often you want to ma
 
 exitstatus=$?
 if [ $exitstatus = 0 ]; then
-	ln -s `pwd`/files/$script /etc/cron.$cron/$script
+	ln -s $inst_fldr/$script /etc/cron.$cron/$script
 else
     message "You can manually add $script to cron later"
 fi
 
 }
 
+install
 add_arch
 yesno
 add_cron
